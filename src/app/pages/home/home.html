@@ -1,0 +1,37 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Добро пожаловать в {{ appName }}!</h1>
+    <p class="subtitle">Лучшие блюда для настоящих гурманов</p>
+
+    <div class="time-display">
+      <span>Текущее время: {{ currentTime }}</span>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h3>Разнообразное меню</h3>
+        <p>Большой выбор блюд на любой вкус</p>
+      </div>
+      <div class="feature">
+        <h3>Удобный подсчет</h3>
+        <p>Автоматический расчет стоимости заказа</p>
+      </div>
+      <div class="feature">
+        <h3>Быстрый выбор</h3>
+        <p>Просто отмечайте нужные позиции</p>
+      </div>
+    </div>
+
+    <a routerLink="/menu" class="cta-button"> Перейти к меню → </a>
+  </div>
+
+  <div class="info-section">
+    <h2>Как это работает?</h2>
+    <ol class="steps">
+      <li>Перейдите на страницу меню</li>
+      <li>Отметьте понравившиеся блюда</li>
+      <li>Следите за итоговой суммой в заголовке</li>
+      <li>Изменяйте выбор в любой момент</li>
+    </ol>
+  </div>
+</div>

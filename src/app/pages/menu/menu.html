@@ -1,0 +1,109 @@
+<main class="menu-container">
+  <!-- Заголовок c позициями -->
+  <div class="header-stats">
+    <div class="stats-card">
+      <div class="stat">
+        <span class="stat-label">Выбрано позиций:</span>
+        <span class="stat-value">{{ selectedCount() }}</span>
+        <span class="stat-percentage">({{ selectedPercentage() }}%)</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Общая стоимость:</span>
+        <span class="stat-value">{{ selectedTotal() }} ₽</span>
+      </div>
+      @if (selectedCount() > 0) {
+        <div class="stat">
+          <span class="stat-label">Средний чек:</span>
+          <span class="stat-value"
+            >{{ selectedTotal() / selectedCount() | number: '1.0-0' }} ₽</span
+          >
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Панель управления -->
+  <div class="controls">
+    <div class="control-group">
+      <button
+        class="btn btn-primary"
+        (click)="selectAll()"
+        [disabled]="selectedCount() === totalItems()"
+      >
+        Выбрать все
+      </button>
+      <button class="btn btn-secondary" (click)="deselectAll()" [disabled]="selectedCount() === 0">
+        Сбросить все
+      </button>
+    </div>
+
+    <div class="control-group">
+      <button class="btn btn-sort" (click)="toggleSort()">
+        {{ getSortButtonText() }}
+      </button>
+    </div>
+  </div>
+
+  <div class="menu-list">
+    @for (item of menuService.getMenuItems()(); track item.id) {
+      <div class="menu-item" [class.item-checked]="item.checked">
+        <label class="checkbox-label" [for]="'item-' + item.id">
+          <input
+            type="checkbox"
+            [checked]="item.checked"
+            (change)="toggleItem(item.id)"
+            [id]="'item-' + item.id"
+          />
+          <span class="checkbox-custom"></span>
+          <span class="item-name">{{ item.name }}</span>
+          <span class="item-category">{{ getCategory(item.name) }}</span>
+          <span class="item-price">{{ item.value }} ₽</span>
+        </label>
+      </div>
+    }
+  </div>
+
+  @if (selectedCount() > 0) {
+    <div class="order-summary">
+      <h3>Ваш заказ:</h3>
+      <div class="summary-list">
+        @for (item of menuService.getSelectedItems(); track item.id) {
+          <div class="summary-item">
+            <span>{{ item.name }}</span>
+            <span>{{ item.value }} ₽</span>
+          </div>
+        }
+      </div>
+
+      <div class="summary-total">
+        <div class="total-row">
+          <span>Итого:</span>
+          <span>{{ selectedTotal() }} ₽</span>
+        </div>
+
+        <!-- Демонстрация скидок -->
+        @if (selectedCount() >= 3) {
+          <div class="discount-row">
+            <span>Скидка 10% за 3+ позиции:</span>
+            <span>-{{ selectedTotal() * 0.1 | number: '1.0-0' }} ₽</span>
+          </div>
+          <div class="final-row">
+            <span>К оплате:</span>
+            <span>{{ getTotalWithDiscount(10) }} ₽</span>
+          </div>
+        }
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <span class="empty-icon">🍽️</span>
+      <p>Ничего не выбрано</p>
+      <small>Отметьте блюда, чтобы увидеть сумму</small>
+    </div>
+  }
+
+  <!-- Навигация -->
+  <div class="navigation">
+    <a routerLink="/" class="back-link">← На главную</a>
+  </div>
+</main>
